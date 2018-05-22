@@ -16,6 +16,8 @@ let cardsArray = ['fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor',
 
 let tempArray = [];
 
+let matchedArray = [];
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -56,14 +58,31 @@ function clickCard() {
 function clickedCard() {
   if (event.target.classList.contains('card')) {
     event.target.classList.add('open', 'show');
-    tempArray.push(event.target.childNodes);
-    checkMatch();
+    tempArray.push(event.target);
+    if (tempArray.length == 2) {
+      checkMatch();
+    } else {
+      clickedCard();
+    };
   };
 }
 
 // Checks if cards are a match
 function checkMatch() {
-
+  let cardOne = tempArray[0].innerHTML;
+  let cardTwo = tempArray[1].innerHTML;
+  if (cardOne == cardTwo) {
+    tempArray[0].classList.add('match');
+    tempArray[1].classList.add('match');
+    matchedArray.push(cardOne, cardTwo);
+    tempArray.length = 0;
+    checkEnd();
+  } else {
+    tempArray[0].classList.remove('open', 'show');
+    tempArray[1].classList.remove('open', 'show');
+    tempArray.length = 0;
+    clickCard();
+  };
 }
 
 dealCards();
