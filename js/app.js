@@ -14,6 +14,8 @@ let cardsArray = ['fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor',
 'fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-bolt',
 'fa fa-cube', 'fa fa-leaf', 'fa fa-bicycle', 'fa fa-bomb']
 
+let tempArray = [];
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -33,7 +35,7 @@ function dealCards() {
   let cards = shuffle(cardsArray)
   for (let i=0; i<cardsArray.length; i++) {
     let li = document.createElement('li');
-    li.className = "card";
+    li.className = 'card';
     let icon = document.createElement('i');
     icon.className = cards[i];
     li.appendChild(icon);
@@ -45,9 +47,23 @@ function dealCards() {
 function clickCard() {
   document.addEventListener('click', function(event) {
     if (event.target.classList.contains('card')) {
-      console.log('click');
+      clickedCard();
     }
   }, false);
+}
+
+// Reveals clicked cards and adds to temporary array
+function clickedCard() {
+  if (event.target.classList.contains('card')) {
+    event.target.classList.add('open', 'show');
+    tempArray.push(event.target.childNodes);
+    checkMatch();
+  };
+}
+
+// Checks if cards are a match
+function checkMatch() {
+
 }
 
 dealCards();
