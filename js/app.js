@@ -7,7 +7,6 @@ const moves = document.querySelector('.moves');
 const restart = document.querySelector('.restart');
 const faFaRepeat = document.querySelector('.fa fa-repeat');
 const deck = document.querySelector('.deck');
-const card = document.querySelector('.card');
 
 // Array of cards
 let cardsArray = ['fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor',
@@ -29,6 +28,7 @@ function shuffle(array) {
   return array;
 }
 
+// Deals she shuffled cards
 function dealCards() {
   let cards = shuffle(cardsArray)
   for (let i=0; i<cardsArray.length; i++) {
@@ -41,7 +41,17 @@ function dealCards() {
   };
 }
 
+// Adds event listeners to each card
+function clickCard() {
+  document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('card')) {
+      console.log('click');
+    }
+  }, false);
+}
+
 dealCards();
+clickCard();
 
 /*
  * set up the event listener for a card. If a card is clicked:
