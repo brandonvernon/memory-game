@@ -7,19 +7,13 @@ const moves = document.querySelector('.moves');
 const restart = document.querySelector('.restart');
 const faFaRepeat = document.querySelector('.fa fa-repeat');
 const deck = document.querySelector('.deck');
+const card = document.querySelector('.card');
 
-//List of cards
-let cards = ['fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor',
+// Array of cards
+let cardsArray = ['fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor',
 'fa fa-bolt', 'fa fa-cube', 'fa fa-leaf', 'fa fa-bicycle', 'fa fa-bomb',
 'fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-bolt',
 'fa fa-cube', 'fa fa-leaf', 'fa fa-bicycle', 'fa fa-bomb']
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -34,6 +28,20 @@ function shuffle(array) {
   }
   return array;
 }
+
+function dealCards() {
+  let cards = shuffle(cardsArray)
+  for (let i=0; i<cardsArray.length; i++) {
+    let li = document.createElement('li');
+    li.className = "card";
+    let icon = document.createElement('i');
+    icon.className = cards[i];
+    li.appendChild(icon);
+    deck.appendChild(li);
+  };
+}
+
+dealCards();
 
 /*
  * set up the event listener for a card. If a card is clicked:
