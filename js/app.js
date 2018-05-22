@@ -32,7 +32,7 @@ function shuffle(array) {
   return array;
 }
 
-// Deals she shuffled cards
+// Deals the shuffled cards
 function dealCards() {
   let cards = shuffle(cardsArray)
   for (let i=0; i<cardsArray.length; i++) {
@@ -42,7 +42,7 @@ function dealCards() {
     icon.className = cards[i];
     li.appendChild(icon);
     deck.appendChild(li);
-  };
+  }
 }
 
 // Adds event listeners to each card
@@ -60,11 +60,13 @@ function clickedCard() {
     event.target.classList.add('open', 'show');
     tempArray.push(event.target);
     if (tempArray.length == 2) {
-      checkMatch();
-    } else {
-      clickedCard();
-    };
-  };
+      if (tempArray[0] != tempArray[1]) {
+        checkMatch();
+      } else {
+          tempArray.splice(1);
+      }
+    }
+  }
 }
 
 // Checks if cards are a match
@@ -75,14 +77,12 @@ function checkMatch() {
     tempArray[0].classList.add('match');
     tempArray[1].classList.add('match');
     matchedArray.push(cardOne, cardTwo);
-    tempArray.length = 0;
-    checkEnd();
+    tempArray = [];
   } else {
     tempArray[0].classList.remove('open', 'show');
     tempArray[1].classList.remove('open', 'show');
-    tempArray.length = 0;
-    clickCard();
-  };
+    tempArray = [];
+  }
 }
 
 dealCards();
