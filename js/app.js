@@ -57,7 +57,7 @@ function clickCard() {
 // Reveals clicked cards and adds to temporary array
 function clickedCard() {
   if (event.target.classList.contains('card')) {
-    event.target.classList.add('open', 'show');
+    event.target.classList.add('open', 'show', 'temp');
     tempArray.push(event.target);
     if (tempArray.length == 2) {
       if (tempArray[0] != tempArray[1]) {
@@ -75,12 +75,16 @@ function checkMatch() {
   let cardTwo = tempArray[1].innerHTML;
   if (cardOne == cardTwo) {
     tempArray[0].classList.add('match');
+    tempArray[0].classList.remove('temp');
     tempArray[1].classList.add('match');
+    tempArray[1].classList.remove('temp');
     matchedArray.push(cardOne, cardTwo);
     tempArray = [];
   } else {
-    tempArray[0].classList.remove('open', 'show');
-    tempArray[1].classList.remove('open', 'show');
+    setTimeout(function() {
+      document.querySelector('.temp').classList.remove('open', 'show', 'temp');
+      document.querySelector('.temp').classList.remove('open', 'show', 'temp');
+    }, 2000);
     tempArray = [];
   }
 }
