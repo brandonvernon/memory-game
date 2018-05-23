@@ -54,6 +54,8 @@ function clickCard() {
       cardClicks++;
       if (cardClicks === 1 || cardClicks === 2) {
         clickedCard();
+      } else {
+          resetTurn();
       }
     }
   })
@@ -87,13 +89,30 @@ function checkMatch() {
     tempArray = [];
     cardClicks = 0;
   } else {
-      setTimeout(function() {
-        document.querySelector('.temp').classList.remove('open', 'show', 'temp');
-        document.querySelector('.temp').classList.remove('open', 'show', 'temp');
-        tempArray = [];
-        cardClicks = 0;
-      }, 1000);
+      let timeout;
+      timeoutFunction();
   }
+}
+
+// Resets unmatched cards after a moment
+function timeoutFunction() {
+  timeout = setTimeout(function() {
+    document.querySelector('.temp').classList.remove('open', 'show', 'temp');
+    document.querySelector('.temp').classList.remove('open', 'show', 'temp');
+    tempArray = [];
+    cardClicks = 0;
+  }, 1000);
+}
+
+// Resets unmatched cards after third card is clicked
+function resetTurn() {
+  clearTimeout(timeout);
+  document.querySelector('.temp').classList.remove('open', 'show', 'temp');
+  document.querySelector('.temp').classList.remove('open', 'show', 'temp');
+  tempArray = [];
+  tempArray.push(event.target);
+  cardClicks = 1;
+  clickedCard();
 }
 
 // Initializes functions to start game
