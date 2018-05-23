@@ -8,6 +8,9 @@ let cardsArray = ['fa fa-diamond', 'fa fa-paper-plane-o',
                   'fa fa-cube', 'fa fa-leaf',
                   'fa fa-bicycle', 'fa fa-bomb']
 
+// Define variables
+const deck = document.querySelector('.deck');
+
 // Array to temporarily store clicked cards in order to compare
 let tempArray = [];
 
@@ -41,6 +44,7 @@ function dealCards() {
   }
 }
 
+// Initially sets card clicks to 0
 let cardClicks = 0;
 
 // Adds event listeners to each card
@@ -52,7 +56,7 @@ function clickCard() {
         clickedCard();
       }
     }
-  }, false);
+  })
 }
 
 // Reveals clicked cards and adds to temporary array
@@ -81,13 +85,14 @@ function checkMatch() {
     tempArray[1].classList.remove('temp');
     matchedArray.push(cardOne, cardTwo);
     tempArray = [];
+    cardClicks = 0;
   } else {
-    setTimeout(function() {
-      document.querySelector('.temp').classList.remove('open', 'show', 'temp');
-      document.querySelector('.temp').classList.remove('open', 'show', 'temp');
-      tempArray = [];
-      cardClicks = 0;
-    }, 1200);
+      setTimeout(function() {
+        document.querySelector('.temp').classList.remove('open', 'show', 'temp');
+        document.querySelector('.temp').classList.remove('open', 'show', 'temp');
+        tempArray = [];
+        cardClicks = 0;
+      }, 1000);
   }
 }
 
