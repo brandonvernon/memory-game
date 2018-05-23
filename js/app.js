@@ -1,21 +1,17 @@
-//select elements
-const container = document.querySelector('.container');
-const scorePanel = document.querySelector('.score-panel');
-const stars = document.querySelector('.stars');
-const faFaStar = document.querySelector('.fa fa-star');
-const moves = document.querySelector('.moves');
-const restart = document.querySelector('.restart');
-const faFaRepeat = document.querySelector('.fa fa-repeat');
-const deck = document.querySelector('.deck');
-
 // Array of cards
-let cardsArray = ['fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor',
-'fa fa-bolt', 'fa fa-cube', 'fa fa-leaf', 'fa fa-bicycle', 'fa fa-bomb',
-'fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-bolt',
-'fa fa-cube', 'fa fa-leaf', 'fa fa-bicycle', 'fa fa-bomb']
+let cardsArray = ['fa fa-diamond', 'fa fa-paper-plane-o',
+                  'fa fa-anchor','fa fa-bolt',
+                  'fa fa-cube', 'fa fa-leaf',
+                  'fa fa-bicycle', 'fa fa-bomb',
+                  'fa fa-diamond', 'fa fa-paper-plane-o',
+                  'fa fa-anchor', 'fa fa-bolt',
+                  'fa fa-cube', 'fa fa-leaf',
+                  'fa fa-bicycle', 'fa fa-bomb']
 
+// Array to temporarily store clicked cards in order to compare
 let tempArray = [];
 
+// Array to store matched cards
 let matchedArray = [];
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -45,11 +41,16 @@ function dealCards() {
   }
 }
 
+let cardClicks = 0;
+
 // Adds event listeners to each card
 function clickCard() {
   document.addEventListener('click', function(event) {
     if (event.target.classList.contains('card')) {
-      clickedCard();
+      cardClicks++;
+      if (cardClicks === 1 || cardClicks === 2) {
+        clickedCard();
+      }
     }
   }, false);
 }
@@ -84,21 +85,18 @@ function checkMatch() {
     setTimeout(function() {
       document.querySelector('.temp').classList.remove('open', 'show', 'temp');
       document.querySelector('.temp').classList.remove('open', 'show', 'temp');
-    }, 2000);
-    tempArray = [];
+      tempArray = [];
+      cardClicks = 0;
+    }, 1200);
   }
 }
 
+// Initializes functions to start game
 dealCards();
 clickCard();
 
 /*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
