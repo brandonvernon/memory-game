@@ -8,10 +8,14 @@ let cardsArray = ['fa fa-diamond', 'fa fa-paper-plane-o',
                   'fa fa-cube', 'fa fa-leaf',
                   'fa fa-bicycle', 'fa fa-bomb']
 
-// Define variables code readability
+// Array of stars
+let starsArray = ['fa fa-star', 'fa fa-star', 'fa fa-star']
+
+// Define variables
 const deck = document.querySelector('.deck');
 const restart = document.querySelector('.restart');
 const moves = document.querySelector('.moves');
+const stars = document.querySelector('.stars');
 
 // Array to temporarily store clicked cards in order to compare
 let tempArray = [];
@@ -50,13 +54,11 @@ function dealCards() {
 let cardClicks = 0;
 let move = 0;
 
-// Adds event listeners to each card and the restart
+// Adds event listeners, manages card clicks
 function clickCard() {
   deck.addEventListener('click', function(event) {
     if (event.target.classList.contains('card')) {
       cardClicks++;
-      move++;
-      moves.innerHTML = move;
       if (cardClicks === 1 || cardClicks === 2) {
         clickedCard();
       } else {
@@ -66,14 +68,21 @@ function clickCard() {
   })
 }
 
-// Reveals clicked cards and adds to temporary array
+// Reveals clicked cards, counts moves, deletes stars
 function clickedCard() {
   if (event.target.classList.contains('card')) {
     event.target.classList.add('open', 'show', 'temp');
     tempArray.push(event.target);
     if (tempArray.length == 2) {
       if (tempArray[0] != tempArray[1]) {
+        move++;
+        moves.innerHTML = move;
         checkMatch();
+        if (move === 15) {
+          stars.children[2].classList.add('hide');
+        } else if (move === 19) {
+          stars.children[1].classList.add('hide');
+        }
       } else {
           tempArray.splice(1);
       }
@@ -111,9 +120,13 @@ function timeoutFunction() {
 
 // Resets unmatched cards after third card is clicked
 function resetTurn() {
-  clearTimeout(timeout);
-  document.querySelector('.temp').classList.remove('open', 'show', 'temp');
-  document.querySelector('.temp').classList.remove('open', 'show', 'temp');
+  try {
+    clearTimeout(timeout);
+    document.querySelector('.temp').classList.remove('open', 'show', 'temp');
+    document.querySelector('.temp').classList.remove('open', 'show', 'temp');
+  }
+  catch(err) {
+  }
   tempArray = [];
   tempArray.push(event.target);
   cardClicks = 1;
@@ -124,6 +137,8 @@ function resetTurn() {
 function restartGame() {
   restart.addEventListener('click', function(event) {
     try {
+      document.querySelector('.hide').classList.remove('hide');
+      document.querySelector('.hide').classList.remove('hide');
       for (i=0; i<cardsArray.length; i++) {
         document.querySelector('.open').classList.remove('open', 'show', 'match', 'temp');
       }
@@ -142,10 +157,23 @@ function restartGame() {
   })
 }
 
+// Adds stars
+function addStar() {
+  for (let i=0; i<starsArray.length; i++) {
+    let li = document.createElement('li');
+    li.className = 'star';
+    let icon = document.createElement('i');
+    icon.className = starsArray[i];
+    li.appendChild(icon);
+    stars.appendChild(li);
+  }
+}
+
 // Initializes functions to start game
 dealCards();
 clickCard();
 restartGame();
+addStar();
 
 /*
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
