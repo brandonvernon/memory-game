@@ -8,8 +8,10 @@ let cardsArray = ['fa fa-diamond', 'fa fa-paper-plane-o',
                   'fa fa-cube', 'fa fa-leaf',
                   'fa fa-bicycle', 'fa fa-bomb']
 
-// Define variables
+// Define variables code readability
 const deck = document.querySelector('.deck');
+const restart = document.querySelector('.restart');
+const moves = document.querySelector('.moves');
 
 // Array to temporarily store clicked cards in order to compare
 let tempArray = [];
@@ -31,9 +33,9 @@ function shuffle(array) {
   return array;
 }
 
-// Deals the shuffled cards
+// Shuffles and deals cards
 function dealCards() {
-  let cards = shuffle(cardsArray)
+  let cards = shuffle(cardsArray);
   for (let i=0; i<cardsArray.length; i++) {
     let li = document.createElement('li');
     li.className = 'card';
@@ -44,14 +46,17 @@ function dealCards() {
   }
 }
 
-// Initially sets card clicks to 0
+// Initially sets card clicks and moves to 0
 let cardClicks = 0;
+let move = 0;
 
-// Adds event listeners to each card
+// Adds event listeners to each card and the restart
 function clickCard() {
-  document.addEventListener('click', function(event) {
+  deck.addEventListener('click', function(event) {
     if (event.target.classList.contains('card')) {
       cardClicks++;
+      move++;
+      moves.innerHTML = move;
       if (cardClicks === 1 || cardClicks === 2) {
         clickedCard();
       } else {
@@ -115,12 +120,34 @@ function resetTurn() {
   clickedCard();
 }
 
+// Restarts game if repeat icon is clicked
+function restartGame() {
+  restart.addEventListener('click', function(event) {
+    try {
+      for (i=0; i<cardsArray.length; i++) {
+        document.querySelector('.open').classList.remove('open', 'show', 'match', 'temp');
+      }
+    }
+    catch(err) {
+    }
+    tempArray = [];
+    matchedArray = [];
+    cardClicks = 0;
+    move = 0;
+    moves.innerHTML = move;
+    while (deck.firstChild) {
+      deck.removeChild(deck.firstChild);
+    }
+    dealCards();
+  })
+}
+
 // Initializes functions to start game
 dealCards();
 clickCard();
+restartGame();
 
 /*
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
