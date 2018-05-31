@@ -12,11 +12,15 @@ let cardsArray = ['fa fa-diamond', 'fa fa-paper-plane-o',
 let starsArray = ['fa fa-star', 'fa fa-star', 'fa fa-star']
 
 // Define variables
-const deck = document.querySelector('.deck');
-const restart = document.querySelector('.restart');
-const moves = document.querySelector('.moves');
 const stars = document.querySelector('.stars');
 const time = document.querySelector('.time');
+const deck = document.querySelector('.deck');
+const moves = document.querySelector('.moves');
+const restart = document.querySelector('.restart');
+const modal = document.querySelector('.modal');
+const close = document.querySelector('.close');
+const content = document.querySelector('.modal-content');
+const modalStars = document.querySelector('.modal-stars');
 
 // Array to temporarily store clicked cards in order to compare
 let tempArray = [];
@@ -24,10 +28,44 @@ let tempArray = [];
 // Array to store matched cards
 let matchedArray = [];
 
+// Adds stars
+function addStar() {
+  for (let i=0; i<starsArray.length; i++) {
+    let li = document.createElement('li');
+    li.className = 'star';
+    let icon = document.createElement('i');
+    icon.className = starsArray[i];
+    li.appendChild(icon);
+    stars.appendChild(li);
+  }
+}
+
+// Initially sets values to 0
+let myTimer = 0;
+let seconds = 0;
+let cardClicks = 0;
+let move = 0;
+
+// Controls the timer
+function timer(bool) {
+  if (bool) {
+    let myTimer = setInterval(function() {
+      if (cardClicks >= 1) {
+        seconds++;
+        time.innerHTML = seconds;
+      }
+    }, 1000);
+  } else {
+    clearInterval(myTimer);
+    myTimer = 0;
+    seconds = 0;
+    time.innerHTML = seconds;
+  }
+}
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
-
   while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
@@ -50,11 +88,6 @@ function dealCards() {
     deck.appendChild(li);
   }
 }
-
-// Initially sets card clicks, moves, and seconds to 0
-let cardClicks = 0;
-let move = 0;
-let seconds = 0;
 
 // Adds event listeners, manages card clicks
 function clickCard() {
@@ -82,8 +115,10 @@ function clickedCard() {
         checkMatch();
         if (move === 15) {
           stars.children[2].classList.add('hide');
+          starsArray.pop();
         } else if (move === 19) {
           stars.children[1].classList.add('hide');
+          starsArray.pop();
         }
       } else {
           tempArray.splice(1);
@@ -104,6 +139,9 @@ function checkMatch() {
     matchedArray.push(cardOne, cardTwo);
     tempArray = [];
     cardClicks = 0;
+    if (matchedArray.length === 2) {
+      endGame();
+    }
   } else {
       let timeout;
       timeoutFunction();
@@ -155,48 +193,64 @@ function restartGame() {
     while (deck.firstChild) {
       deck.removeChild(deck.firstChild);
     }
-    stopTimer();
-    let myTimer = setInterval(startTimer, 1000);
+    timer(false);
     dealCards();
   })
 }
 
-// Adds stars
-function addStar() {
+//Show modal after game is won
+function endGame() {
+  content.innerHTML = "You Won!" + seconds;
   for (let i=0; i<starsArray.length; i++) {
     let li = document.createElement('li');
-    li.className = 'star';
+    li.className = 'startemp';
     let icon = document.createElement('i');
     icon.className = starsArray[i];
     li.appendChild(icon);
-    stars.appendChild(li);
+    modalStars.appendChild(li);
   }
-}
-
-// Declares the timer
-let myTimer = setInterval(startTimer, 1000);
-
-// Starts the timer
-function startTimer() {
-  if (cardClicks === 1) {
-    seconds++;
-    time.innerHTML = seconds;
+  modal.style.display = "block";
+  close.onclick = function() {
+    modal.style.display = "none";
+    restartGameWin();
   }
+  timer(false);
 }
 
-// Stops the timer
-function stopTimer() {
-  clearInterval(myTimer);
-  seconds = 0;
-  time.innerHTML = seconds
+// Restart game after modal is clossed
+function restartGameWin(){
+  try {
+    document.querySelector('.hide').classList.remove('hide');
+    document.querySelector('.hide').classList.remove('hide');
+    for (i=0; i<cardsArray.length; i++) {
+      document.querySelector('.open').classList.remove('open', 'show', 'match', 'temp');
+    }
+  }
+  catch(err) {
+  }
+  tempArray = [];
+  matchedArray = [];
+  cardClicks = 0;
+  move = 0;
+  moves.innerHTML = move;
+  while (deck.firstChild) {
+    deck.removeChild(deck.firstChild);
+  }
+  const starTemp = document.querySelector('.startemp');
+  modalStars.removeChild(starTemp);
+  const starTempOne = document.querySelector('.startemp');
+  modalStars.removeChild(starTempOne);
+  const starTempTwo = document.querySelector('.startemp');
+  modalStars.removeChild(starTempTwo);
+  dealCards();
 }
-
 
 // Initializes functions to start game
+addStar();
+timer(true);
 dealCards();
 clickCard();
 restartGame();
-addStar();
 
 /*
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
