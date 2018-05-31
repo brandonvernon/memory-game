@@ -16,6 +16,7 @@ const deck = document.querySelector('.deck');
 const restart = document.querySelector('.restart');
 const moves = document.querySelector('.moves');
 const stars = document.querySelector('.stars');
+const time = document.querySelector('.time');
 
 // Array to temporarily store clicked cards in order to compare
 let tempArray = [];
@@ -50,9 +51,10 @@ function dealCards() {
   }
 }
 
-// Initially sets card clicks and moves to 0
+// Initially sets card clicks, moves, and seconds to 0
 let cardClicks = 0;
 let move = 0;
+let seconds = 0;
 
 // Adds event listeners, manages card clicks
 function clickCard() {
@@ -153,6 +155,8 @@ function restartGame() {
     while (deck.firstChild) {
       deck.removeChild(deck.firstChild);
     }
+    stopTimer();
+    let myTimer = setInterval(startTimer, 1000);
     dealCards();
   })
 }
@@ -168,6 +172,25 @@ function addStar() {
     stars.appendChild(li);
   }
 }
+
+// Declares the timer
+let myTimer = setInterval(startTimer, 1000);
+
+// Starts the timer
+function startTimer() {
+  if (cardClicks === 1) {
+    seconds++;
+    time.innerHTML = seconds;
+  }
+}
+
+// Stops the timer
+function stopTimer() {
+  clearInterval(myTimer);
+  seconds = 0;
+  time.innerHTML = seconds
+}
+
 
 // Initializes functions to start game
 dealCards();
