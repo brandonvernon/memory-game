@@ -208,7 +208,7 @@ function endGame() {
     let li = document.createElement('li');
     li.className = 'startemp';
     let icon = document.createElement('i');
-    icon.className = starsArray[i];
+    icon.className = 'fa fa-star';
     li.appendChild(icon);
     modalStars.appendChild(li);
   }
