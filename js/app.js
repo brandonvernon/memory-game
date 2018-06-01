@@ -50,7 +50,7 @@ let move = 0;
 function timer(bool) {
   if (bool) {
     let myTimer = setInterval(function() {
-      if (cardClicks >= 1) {
+      if (cardClicks >= 1 || move >= 1) {
         seconds++;
         time.innerHTML = seconds;
       }
@@ -89,7 +89,7 @@ function dealCards() {
   }
 }
 
-// Adds event listeners, manages card clicks
+// Adds event listeners and manages card clicks
 function clickCard() {
   deck.addEventListener('click', function(event) {
     if (event.target.classList.contains('card')) {
@@ -139,7 +139,7 @@ function checkMatch() {
     matchedArray.push(cardOne, cardTwo);
     tempArray = [];
     cardClicks = 0;
-    if (matchedArray.length === 2) {
+    if (matchedArray.length === 16) {
       endGame();
     }
   } else {
@@ -200,7 +200,10 @@ function restartGame() {
 
 //Show modal after game is won
 function endGame() {
-  content.innerHTML = "You Won!" + seconds;
+  content.innerHTML = "Brilliant! Completed in " + seconds + " seconds";
+  cardClicks = 0;
+  move = 0;
+  timer(false);
   for (let i=0; i<starsArray.length; i++) {
     let li = document.createElement('li');
     li.className = 'startemp';
@@ -214,7 +217,6 @@ function endGame() {
     modal.style.display = "none";
     restartGameWin();
   }
-  timer(false);
 }
 
 // Restart game after modal is clossed
@@ -236,12 +238,17 @@ function restartGameWin(){
   while (deck.firstChild) {
     deck.removeChild(deck.firstChild);
   }
-  const starTemp = document.querySelector('.startemp');
-  modalStars.removeChild(starTemp);
-  const starTempOne = document.querySelector('.startemp');
-  modalStars.removeChild(starTempOne);
-  const starTempTwo = document.querySelector('.startemp');
-  modalStars.removeChild(starTempTwo);
+  try {
+    const starTemp = document.querySelector('.startemp');
+    modalStars.removeChild(starTemp);
+    const starTempOne = document.querySelector('.startemp');
+    modalStars.removeChild(starTempOne);
+    const starTempTwo = document.querySelector('.startemp');
+    modalStars.removeChild(starTempTwo);
+  }
+  catch(err) {
+  }
+  timer(false);
   dealCards();
 }
 
@@ -251,8 +258,3 @@ timer(true);
 dealCards();
 clickCard();
 restartGame();
-
-/*
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
