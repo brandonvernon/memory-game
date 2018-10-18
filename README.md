@@ -1,6 +1,6 @@
 # Classic Memory Game
 
-A responsive one page web application built with HTML, CSS, and Javascript.
+One page web application built with HTML, CSS, and Javascript.
 
 View [here](http://www.brandonvernon.com/memory-game/)
 
